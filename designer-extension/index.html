@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Localization Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./panel.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Localization Manager</h1>
+      <p class="muted">Translate CMS items and pages into your secondary locales, review, then write back.</p>
+    </header>
+
+    <section class="card" id="connect-card" hidden>
+      <h2>Connect</h2>
+      <p class="muted">Paste the Site ID and admin token shown after installation.</p>
+      <div class="row">
+        <input id="conn-site" placeholder="Site ID" />
+        <input id="conn-token" type="password" placeholder="Admin token" />
+        <button id="conn-save" class="btn primary">Connect</button>
+      </div>
+    </section>
+
+    <div id="main" hidden>
+      <nav class="tabs">
+        <button class="tab active" data-tab="queue">Queue</button>
+        <button class="tab" data-tab="xliff">XLIFF</button>
+        <button class="tab" data-tab="glossary">Glossary</button>
+        <button class="tab" data-tab="settings">Locales</button>
+      </nav>
+
+      <section id="progress" class="card"></section>
+
+      <section class="pane" id="pane-queue">
+        <div class="row space">
+          <div class="row">
+            <select id="q-locale"></select>
+            <select id="q-status">
+              <option value="missing,stale,pending,rejected,approved">Open work</option>
+              <option value="missing">Missing</option>
+              <option value="stale">Stale</option>
+              <option value="pending">Pending review</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="written">Written</option>
+            </select>
+          </div>
+          <div class="row">
+            <button class="btn" id="q-scan">Scan site</button>
+            <button class="btn" id="q-translate">Machine translate</button>
+            <button class="btn" id="q-approve-all">Approve all pending</button>
+            <button class="btn primary" id="q-writeback">Write back approved</button>
+          </div>
+        </div>
+        <div id="q-list"></div>
+        <div class="row space"><span id="q-count" class="muted"></span><span><button class="btn" id="q-prev">Prev</button> <button class="btn" id="q-next">Next</button></span></div>
+      </section>
+
+      <section class="pane" id="pane-xliff" hidden>
+        <div class="card">
+          <h2>Export</h2>
+          <p class="muted">Download an XLIFF 1.2 file of the selected locale's open units for an external translator.</p>
+          <div class="row"><select id="x-locale"></select><button class="btn" id="x-export">Download .xlf</button></div>
+        </div>
+        <div class="card">
+          <h2>Import</h2>
+          <p class="muted">Imported translations land as pending so they can still be reviewed.</p>
+          <div class="row"><input type="file" id="x-file" accept=".xlf,.xliff,.xml" /><button class="btn primary" id="x-import">Import</button></div>
+          <p id="x-status" class="muted"></p>
+        </div>
+      </section>
+
+      <section class="pane" id="pane-glossary" hidden>
+        <div class="card">
+          <h2>Add term</h2>
+          <div class="row">
+            <input id="g-term" placeholder="Term (e.g. Acme Cloud)" />
+            <input id="g-translation" placeholder="Required translation" />
+            <select id="g-locale"></select>
+            <label class="check"><input type="checkbox" id="g-dnt" /> Do not translate</label>
+            <button class="btn primary" id="g-add">Add</button>
+          </div>
+        </div>
+        <div id="g-list"></div>
+      </section>
+
+      <section class="pane" id="pane-settings" hidden>
+        <div class="card">
+          <p class="muted">Locales come from your Webflow site. Switch off a locale to exclude it from scans and machine translation.</p>
+          <div id="s-list"></div>
+          <button class="btn" id="s-refresh">Refresh locales from Webflow</button>
+        </div>
+        <div class="card">
+          <h2>Connection</h2>
+          <p class="muted" id="s-conn"></p>
+          <button class="btn" id="s-disconnect">Disconnect</button>
+        </div>
+      </section>
+    </div>
+    <div id="toast" class="toast" hidden></div>
+  </div>
+  <script src="./panel.js"></script>
+</body>
+</html>
